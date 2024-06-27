@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import { DayPilot, DayPilotCalendar, DayPilotNavigator, CalendarProps } from "@daypilot/daypilot-lite-react";
 
-const Calendar = () => {
+type CalProps = {
+    handleEventListChange: (args: DayPilot.EventData[]) => void;
+}
+
+const Calendar = (calProps: CalProps) => {
 
     const calendarRef = useRef<DayPilotCalendar>(null);
 
@@ -20,11 +24,13 @@ const Calendar = () => {
           id: DayPilot.guid(),
           text: "free"
         });
+        calProps.handleEventListChange(dp.events.list);
     }
 
     const handleDeleteEvent = async (args: { source: DayPilot.Event; }) => {
         const dp = calendarRef.current!.control;
         dp.events.remove(args.source);
+        calProps.handleEventListChange(dp.events.list);
     }
 
     const [calendarConfig, setCalendarConfig] = useState<CalendarProps>({
