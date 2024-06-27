@@ -1,7 +1,7 @@
 {
   "name": "cal2text",
   "version": "0.1.0",
-  "homepage": "https://tarellano.github.io/cal2text",
+  "homepage": "https://tarellano.com/cal2text",
   "private": true,
   "scripts": {
     "predeploy": "npm run build",
