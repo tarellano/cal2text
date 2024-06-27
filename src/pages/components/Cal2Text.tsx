@@ -1,40 +1,8 @@
 import { useState } from "react";
 import Calendar from "./Calendar";
 import { DayPilot } from "@daypilot/daypilot-lite-react";
+import EventsTextbox from "./EventsTextbox";
 
-type EventTextBoxProps = {
-    events: DayPilot.EventData[] | null
-}
-
-const EventTextBox = (props: EventTextBoxProps) => {
-
-    const parseEventText = (event: DayPilot.EventData) => {
-        return event.start.toString() + " - " + event.end.toString()
-    }
-
-    const createEventList = (events: DayPilot.EventData[]) => {
-        return (
-            <ul>
-                {events.map(e => (
-                    <li key={e.id}>
-                        {parseEventText(e)}
-                    </li>
-                )
-                )}
-            </ul>
-        )
-    }
-
-    if (!props.events || props.events === undefined || props.events!.length == 0) {
-        return <div>Click on the calendar to create an event.</div>
-    }
-
-    return (
-        <div>
-            {createEventList(props.events!)}
-        </div>
-    )
-}
 
 
 const Cal2Text = () => {
@@ -49,7 +17,7 @@ const Cal2Text = () => {
     return (
         <div>
             <Calendar handleEventListChange={handleEventListChange} />
-            <EventTextBox events={events} />
+            <EventsTextbox events={events} />
         </div>
     )
 }
