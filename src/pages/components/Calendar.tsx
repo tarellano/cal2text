@@ -27,6 +27,16 @@ const Calendar = (calProps: CalProps) => {
         calProps.handleEventListChange(dp.events.list);
     }
 
+    const handleMoveEvent = async () => {
+        const dp = calendarRef.current!.control;
+        calProps.handleEventListChange(dp.events.list);
+    }
+
+    const handleResizeEvent = async () => {
+        const dp = calendarRef.current!.control;
+        calProps.handleEventListChange(dp.events.list);
+    }
+
     const handleDeleteEvent = async (args: { source: DayPilot.Event; }) => {
         const dp = calendarRef.current!.control;
         dp.events.remove(args.source);
@@ -36,6 +46,8 @@ const Calendar = (calProps: CalProps) => {
     const [calendarConfig, setCalendarConfig] = useState<CalendarProps>({
         viewType: "Week",
         timeRangeSelectedHandling: "Enabled",
+        onEventMoved: handleMoveEvent,
+        onEventResized: handleResizeEvent,
         onTimeRangeSelected: handleNewEvent,
         contextMenu: new DayPilot.Menu({
             items: [
