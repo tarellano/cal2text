@@ -46,6 +46,8 @@ const Calendar = (calProps: CalProps) => {
     const [calendarConfig, setCalendarConfig] = useState<CalendarProps>({
         viewType: "Week",
         timeRangeSelectedHandling: "Enabled",
+        cellHeight: 25,
+        showToolTip: false,
         onEventMoved: handleMoveEvent,
         onEventResized: handleResizeEvent,
         onTimeRangeSelected: handleNewEvent,
@@ -60,8 +62,11 @@ const Calendar = (calProps: CalProps) => {
     });
 
     return (
-        <div>
-            <DayPilotNavigator 
+        <div className="flex">
+            <DayPilotNavigator
+                cellHeight={20}
+                showMonths={3}
+                rowsPerMonth="Auto"
                 selectMode="Week"
                 onTimeRangeSelected={handleTimeRangeSelected}
             />

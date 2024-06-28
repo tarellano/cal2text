@@ -17,7 +17,9 @@ const Cal2Text = () => {
     return (
         <div>
             <Calendar handleEventListChange={handleEventListChange} />
-            <EventsTextbox events={events} />
+            <div className="m-5">
+                <EventsTextbox events={events} />
+            </div>
         </div>
     )
 }
