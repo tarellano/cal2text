@@ -3,6 +3,8 @@ import { DayPilot } from "@daypilot/daypilot-lite-react"
 
 type EventsTextboxProps = {
     events: DayPilot.EventData[] | null,
+    groupByDate?: boolean,
+    mergeOverlapping?: boolean,
 }
 
 const EventsTextbox = (props: EventsTextboxProps) => {
