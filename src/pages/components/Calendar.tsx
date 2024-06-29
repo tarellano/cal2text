@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { DayPilot, DayPilotCalendar, DayPilotNavigator, CalendarProps } from "@daypilot/daypilot-lite-react";
+import { DayPilot, DayPilotCalendar, DayPilotNavigator, CalendarProps, NavigatorProps } from "@daypilot/daypilot-lite-react";
 
 type CalProps = {
     handleEventListChange: (args: DayPilot.EventData[]) => void;
@@ -19,10 +19,10 @@ const Calendar = (calProps: CalProps) => {
         const dp = calendarRef.current!.control;
         dp.clearSelection();
         dp.events.add({
-          start: args.start,
-          end: args.end,
-          id: DayPilot.guid(),
-          text: "free"
+            start: args.start,
+            end: args.end,
+            id: DayPilot.guid(),
+            text: "free"
         });
         calProps.handleEventListChange(dp.events.list);
     }
@@ -53,24 +53,26 @@ const Calendar = (calProps: CalProps) => {
         onTimeRangeSelected: handleNewEvent,
         contextMenu: new DayPilot.Menu({
             items: [
-              {
-                text: "Delete",
-                onClick: handleDeleteEvent
-              }
+                {
+                    text: "Delete",
+                    onClick: handleDeleteEvent
+                }
             ]
-          }),
+        }),
+    });
+
+    const [navigatorConfig, _setNavigatorConfig] = useState<NavigatorProps>({
+        cellHeight: 20,
+        showMonths: 3,
+        rowsPerMonth: "Auto",
+        selectMode: "Week",
+        onTimeRangeSelected: handleTimeRangeSelected,
     });
 
     return (
         <div className="flex">
-            <DayPilotNavigator
-                cellHeight={20}
-                showMonths={3}
-                rowsPerMonth="Auto"
-                selectMode="Week"
-                onTimeRangeSelected={handleTimeRangeSelected}
-            />
-            <DayPilotCalendar {...calendarConfig} ref={calendarRef}/>
+            <DayPilotNavigator {...navigatorConfig} />
+            <DayPilotCalendar {...calendarConfig} ref={calendarRef} />
         </div>
     )
 }
