@@ -43,7 +43,7 @@ const Calendar = (calProps: CalProps) => {
         calProps.handleEventListChange(dp.events.list);
     }
 
-    const [calendarConfig, setCalendarConfig] = useState<CalendarProps>({
+    const [calendarConfig, _setCalendarConfig] = useState<CalendarProps>({
         viewType: "Week",
         timeRangeSelectedHandling: "Enabled",
         cellHeight: 25,
