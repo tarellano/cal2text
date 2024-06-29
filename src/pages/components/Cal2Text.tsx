@@ -1,8 +1,7 @@
 import { useState } from "react";
 import Calendar from "./Calendar";
 import { DayPilot } from "@daypilot/daypilot-lite-react";
-import EventsTextbox from "./EventsTextbox";
-
+import EventsTextSection from "./EventsTextSection";
 
 
 const Cal2Text = () => {
@@ -18,7 +17,7 @@ const Cal2Text = () => {
         <div>
             <Calendar handleEventListChange={handleEventListChange} />
             <div className="m-5">
-                <EventsTextbox events={events} />
+                <EventsTextSection events={events} />
             </div>
         </div>
     )
