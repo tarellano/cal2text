@@ -8,7 +8,7 @@ export default function Home() {
     <main
       className={`flex min-h-screen flex-col items-center p-12 ${inter.className}`}
     >
-      cal2text
+      <p className="text-xl"> cal2text</p>
       <Cal2Text/>
     </main>
   );
