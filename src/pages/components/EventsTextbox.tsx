@@ -20,26 +20,37 @@ const EventsTextbox = (props: EventsTextboxProps) => {
         return date + ": " + start_time + " - " + end_time
     }
 
-    const merge = (events: DayPilot.EventData[]) => {
-        const copy = [...events];
-        const res: DayPilot.EventData[] = [];
+    const overlaps = (event_1: DayPilot.EventData, event_2: DayPilot.EventData) => {
+        return event_1.end.toString().localeCompare(event_2.start.toString()) >= 0;
+    }
 
-        for (let i = 0; i < copy.length; i++) {
+    const hasLaterEnd = (event_1: DayPilot.EventData, event_2: DayPilot.EventData) => {
+        return event_1.end.toString().localeCompare(event_2.end.toString()) > 0
+    }
+
+    const merge = (events: DayPilot.EventData[]) => {
+        const res: DayPilot.EventData[] = [];
+        for (let i = 0; i < events.length; i++) {
             if (res.length == 0) {
-                res.push(copy[i]);
+                res.push(events[i]);
             } else {
-                let top = res.pop();
-                if (top === undefined) throw Error("Popping from empty stack");
-                if (top.end.toString().localeCompare(copy[i].start.toString()) >= 0) {
-                    top.end = top.end.toString().localeCompare(copy[i].end.toString()) > 0 ? top.end : events[i].end;
-                    res.push(top);
+                let latest_event = res.pop();
+                if (latest_event === undefined) throw Error("Popping from empty stack");
+                if (overlaps(latest_event, events[i])) {
+                    const end = hasLaterEnd(latest_event, events[i]) ? latest_event.end : events[i].end;
+                    const merged_event = {
+                        start: latest_event.start,
+                        end: end,
+                        id: DayPilot.guid(),
+                        text: "free"
+                    }
+                    res.push(merged_event);
                 } else {
-                    res.push(top);
-                    res.push(copy[i]);
+                    res.push(latest_event);
+                    res.push(events[i]);
                 }
             }
         }
-
         return res;
     }
 
