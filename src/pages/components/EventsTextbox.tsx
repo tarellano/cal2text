@@ -9,15 +9,23 @@ type EventsTextboxProps = {
 
 const EventsTextbox = (props: EventsTextboxProps) => {
 
-    const parseEventText = (event: DayPilot.EventData) => {
-        const start = event.start;
-        const end = event.end;
+    const formatDate = (event: DayPilot.EventData) => {
+        return event.start.toString("ddd MMM dd", "en-US");
+    }
 
-        const date = start.toString("ddd MMM dd", "en-US");
-        const start_time = start.toString("hh:mmtt", "en-US");
-        const end_time = end.toString("hh:mmtt", "en-US");
+    const formatDuration = (event: DayPilot.EventData) => {
+        const start_time = event.start.toString("hh:mmtt", "en-US");
+        const end_time = event.end.toString("hh:mmtt", "en-US");
+        return start_time + " - " + end_time;
+    }
 
-        return date + ": " + start_time + " - " + end_time
+    const formatEventText = (event: DayPilot.EventData) => {
+        return formatDate(event) + ": " + formatDuration(event);
+    }
+
+    const formatEventsText = (events: DayPilot.EventData[]) => {
+        const durations = events.map(e => formatDuration(e)).join("; ");
+        return formatDate(events[0]) + ": " + durations;
     }
 
     const overlaps = (event_1: DayPilot.EventData, event_2: DayPilot.EventData) => {
@@ -60,19 +68,51 @@ const EventsTextbox = (props: EventsTextboxProps) => {
         return copy;
     }
 
+    const groupEventsByDate = (events: DayPilot.EventData[]) => {
+        return Object.groupBy(events, ({ start }) => start.toString("ddd MMM dd", "en-US"));
+    }
+
     const createEventList = (events: DayPilot.EventData[]) => {
+
         let filtered_events = sortByStartTime(events);
         if (props.mergeOverlapping) {
             filtered_events = merge(filtered_events);
         }
-        return (
-            <ul>
-                {filtered_events.map(e => (
+
+
+        const createListItems = (events: DayPilot.EventData[]) => {
+            if (props.groupByDate) {
+                const filtered_events_by_date = groupEventsByDate(filtered_events);
+                const list_items = [];
+                let keys = Object.keys(filtered_events_by_date);
+                keys.sort();
+                for (let key of keys) {
+                    if (filtered_events_by_date[key] !== undefined && filtered_events_by_date[key]!.length > 0) {
+                        list_items.push(createListItem(key, filtered_events_by_date[key] ?? []));
+                    }
+                }
+                return list_items;
+            } else {
+                return events.map(e => (
                     <li key={e.id}>
-                        {parseEventText(e)}
+                        {formatEventText(e)}
                     </li>
                 )
-                )}
+                );
+            }
+        }
+
+        const createListItem = (date: string, events: DayPilot.EventData[]) => {
+            return (
+                <li key={date}>
+                    {formatEventsText(events)}
+                </li>
+            )
+        }
+
+        return (
+            <ul>
+                {createListItems(filtered_events)}
             </ul>
         )
     }
