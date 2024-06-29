@@ -56,7 +56,7 @@ const EventsTextOptions = (props: EventsTextOptionsProps) => {
                     checked={props.groupByDate}
                     onChange={props.handleGroupByDateToggle}
                 />
-                <label htmlFor="group-by-date"> group by date </label>
+                <label htmlFor="group-by-date" className="font-mono"> group by date </label>
             </div>
             <div>
                 <input
@@ -65,7 +65,7 @@ const EventsTextOptions = (props: EventsTextOptionsProps) => {
                     checked={props.mergeOverlapping}
                     onChange={props.handleMergeOverlappingToggle}
                 />
-                <label htmlFor="merge-overlapping"> merge overlapping </label>
+                <label htmlFor="merge-overlapping" className="font-mono"> merge overlapping </label>
             </div>
         </div>
     )
