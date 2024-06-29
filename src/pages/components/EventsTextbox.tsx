@@ -20,6 +20,29 @@ const EventsTextbox = (props: EventsTextboxProps) => {
         return date + ": " + start_time + " - " + end_time
     }
 
+    const merge = (events: DayPilot.EventData[]) => {
+        const copy = [...events];
+        const res: DayPilot.EventData[] = [];
+
+        for (let i = 0; i < copy.length; i++) {
+            if (res.length == 0) {
+                res.push(copy[i]);
+            } else {
+                let top = res.pop();
+                if (top === undefined) throw Error("Popping from empty stack");
+                if (top.end.toString().localeCompare(copy[i].start.toString()) >= 0) {
+                    top.end = top.end.toString().localeCompare(copy[i].end.toString()) > 0 ? top.end : events[i].end;
+                    res.push(top);
+                } else {
+                    res.push(top);
+                    res.push(copy[i]);
+                }
+            }
+        }
+
+        return res;
+    }
+
     const sortByStartTime = (events: DayPilot.EventData[]) => {
         const copy = [...events];
         copy.sort((a, b) => a.start.toString().localeCompare(b.start.toString()));
@@ -27,10 +50,13 @@ const EventsTextbox = (props: EventsTextboxProps) => {
     }
 
     const createEventList = (events: DayPilot.EventData[]) => {
-        const sorted = sortByStartTime(events);
+        let filtered_events = sortByStartTime(events);
+        if (props.mergeOverlapping) {
+            filtered_events = merge(filtered_events);
+        }
         return (
             <ul>
-                {sorted.map(e => (
+                {filtered_events.map(e => (
                     <li key={e.id}>
                         {parseEventText(e)}
                     </li>
