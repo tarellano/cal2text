@@ -32,11 +32,11 @@ const EventsTextbox = (props: EventsTextboxProps) => {
     }
 
     if (!props.events || props.events === undefined || props.events!.length == 0) {
-        return <div>Click on the calendar to create an event.</div>
+        return <p className="font-mono">Click on the calendar to create an event.</p>
     }
 
     return (
-        <div>
+        <div className="font-mono">
             {createEventList(props.events!)}
         </div>
     )
