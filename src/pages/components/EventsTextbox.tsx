@@ -20,10 +20,17 @@ const EventsTextbox = (props: EventsTextboxProps) => {
         return date + ": " + start_time + " - " + end_time
     }
 
+    const sortByStartTime = (events: DayPilot.EventData[]) => {
+        const copy = [...events];
+        copy.sort((a, b) => a.start.toString().localeCompare(b.start.toString()));
+        return copy;
+    }
+
     const createEventList = (events: DayPilot.EventData[]) => {
+        const sorted = sortByStartTime(events);
         return (
             <ul>
-                {events.map(e => (
+                {sorted.map(e => (
                     <li key={e.id}>
                         {parseEventText(e)}
                     </li>
