@@ -73,12 +73,10 @@ const EventsTextbox = (props: EventsTextboxProps) => {
     }
 
     const createEventList = (events: DayPilot.EventData[]) => {
-
         let filtered_events = sortByStartTime(events);
         if (props.mergeOverlapping) {
             filtered_events = merge(filtered_events);
         }
-
 
         const createListItems = (events: DayPilot.EventData[]) => {
             if (props.groupByDate) {
